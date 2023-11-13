@@ -1,22 +1,33 @@
 import { COOKIE_NAME } from "../constants/common.js";
 import { createToken } from "./token-manager.js";
-import { Response } from "express";
+import { Response, Request } from "express";
 
-export const createCookie = (res: Response, user) => {
+export const createCookie = (res: Response, user, req: Request) => {
+  res.set("Access-Control-Allow-Origin", req.headers.origin); //req.headers.origin
+  res.set("Access-Control-Allow-Credentials", "true");
+  // access-control-expose-headers allows JS in the browser to see headers other than the default 7
+  res.set(
+    "Access-Control-Expose-Headers",
+    "date, etag, access-control-allow-origin, access-control-allow-credentials"
+  );
   res.clearCookie(COOKIE_NAME, {
     path: "/",
-    domain: "localhost", //esto debo modificarlo con mi dominio propio en prod
     httpOnly: true,
     signed: true,
+    secure: true,
+    sameSite: "none",
   });
+
   const token = createToken(user._id.toString(), user.email, "7d");
   const expires = new Date();
   expires.setDate(expires.getDate() + 7);
+
   res.cookie(COOKIE_NAME, token, {
     path: "/",
-    domain: "localhost", //esto debo modificarlo con mi dominio propio en prod
     expires,
     httpOnly: true,
     signed: true,
+    secure: true,
+    sameSite: "none",
   });
 };
