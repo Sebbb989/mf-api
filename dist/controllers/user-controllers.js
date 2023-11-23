@@ -17,21 +17,35 @@ export const getAllUsers = async (req, res, next) => {
 };
 export const userSignUp = async (req, res, next) => {
     try {
-        const { name, email, image, password } = req.body;
+        const { name, email, dni, parents, isForeign, password } = req.body;
         //verify if user exists
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ dni });
         if (existingUser) {
             return res.status(401).send("User alredy registered");
         }
         const hashedPassword = await hash(password, 10);
-        const user = new User({ name, email, image, password: hashedPassword });
+        const user = new User({
+            name,
+            email,
+            dni,
+            dniImage: "DATOQUEMADO",
+            parents: "DATOQUEMADO",
+            credits: "DATOQUEMADO",
+            healthCertificate: "DATOQUEMADO",
+            isForeign: false,
+            migratoryPermit: "DATOQUEMADO",
+            password: hashedPassword,
+        });
         await user.save();
         //create cookie
         createCookie(res, user, req);
         //reponse
-        return res
-            .status(200)
-            .json({ message: "OK", name: user.name, email: user.email, image: user.image });
+        return res.status(200).json({
+            message: "OK",
+            name,
+            email,
+            dni,
+        });
     }
     catch (error) {
         console.log(error);
@@ -41,8 +55,8 @@ export const userSignUp = async (req, res, next) => {
 };
 export const userLogin = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email });
+        const { dni, password } = req.body;
+        const user = await User.findOne({ dni });
         if (!user)
             return res.status(401).send("User not found");
         const isPasswordValid = await compare(password, user.password);
@@ -50,9 +64,12 @@ export const userLogin = async (req, res, next) => {
             return res.status(403).send("Incorrect password");
         //create cookie
         createCookie(res, user, req);
-        return res
-            .status(200)
-            .json({ message: "Welcome", name: user.name, email: user.email, image: user.image });
+        return res.status(200).json({
+            message: "Welcome",
+            name: user.name,
+            email: user.email,
+            dni: user.dni,
+        });
     }
     catch (error) {
         console.log(error);
@@ -69,9 +86,12 @@ export const verifyUser = async (req, res, next) => {
         if (user._id.toString() !== res.locals.jwtData.id) {
             return res.status(401).send("Permission denied");
         }
-        return res
-            .status(200)
-            .json({ message: "Welcome", name: user.name, email: user.email, image: user.image });
+        return res.status(200).json({
+            message: "Welcome",
+            name: user.name,
+            email: user.email,
+            dniImage: user.dniImage,
+        });
     }
     catch (error) {
         console.log(error);

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const userSchema = new mongoose.Schema({
+export const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -9,8 +9,34 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    image: {
+    dni: {
         type: String,
+        required: true,
+        unique: true,
+    },
+    dniImage: {
+        type: String,
+        required: true,
+    },
+    parents: {
+        type: String,
+        required: true,
+    },
+    credits: {
+        type: String,
+        required: true,
+    },
+    healthCertificate: {
+        type: String,
+        required: true,
+    },
+    isForeign: {
+        type: Boolean,
+        required: true,
+    },
+    migratoryPermit: {
+        type: String,
+        required: true,
     },
     password: {
         type: String,

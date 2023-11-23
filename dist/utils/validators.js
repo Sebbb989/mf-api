@@ -15,17 +15,15 @@ export const validate = (validations) => {
     };
 };
 export const loginValidator = [
-    body("email").trim().isEmail().withMessage("Email is required"),
+    body("dni").notEmpty().withMessage("dni is required"),
     body("password")
         .trim()
         .isLength({ min: 5, max: 22 })
         .withMessage("Password should be at least 6 characters"),
 ];
 export const signupValidators = [
-    body("name").notEmpty().withMessage("Name is required"),
+    body("name").notEmpty().withMessage("name is required"),
+    body("email").notEmpty().isEmail().withMessage("email is required"),
     ...loginValidator,
-];
-export const chatCompletionValidator = [
-    body("message").notEmpty().withMessage("Message is required"),
 ];
 //# sourceMappingURL=validators.js.map
