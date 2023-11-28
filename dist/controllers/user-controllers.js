@@ -90,7 +90,7 @@ export const verifyUser = async (req, res, next) => {
             message: "Welcome",
             name: user.name,
             email: user.email,
-            dniImage: user.dniImage,
+            dni: user.dni,
         });
     }
     catch (error) {

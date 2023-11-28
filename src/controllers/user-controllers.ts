@@ -117,7 +117,7 @@ export const verifyUser = async (
       message: "Welcome",
       name: user.name,
       email: user.email,
-      dniImage: user.dniImage,
+      dni: user.dni,
     });
   } catch (error) {
     console.log(error);
