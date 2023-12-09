@@ -1,13 +1,16 @@
 
 export interface IGrade {
-  grade: Number;
-  capacity: Number;
+  grade: number;
+  capacity: number;
+  currentlyEnrolled: number;
   students: Array<IUser>;
 }
 
 export interface IInstitute {
-  name: Number;
-  province: Number;
+  name: String;
+  province: String;
+  minGrade: number;
+  maxGrade: number;
   grades: Array<IGrade>;
 }
 
@@ -22,4 +25,6 @@ export interface IUser {
   isForeign: Boolean;
   migratoryPermit: string;
   password: string;
+  isEnrolled: Boolean;
+  enrollNumber: string;
 }

@@ -46,6 +46,12 @@ export const userSchema = new mongoose.Schema<IUser>({
     type: String,
     required: true,
   },
+  isEnrolled: {
+    type: Boolean,
+  },
+  enrollNumber: {
+    type: String,
+  }
 });
 
 export default mongoose.model("User", userSchema);

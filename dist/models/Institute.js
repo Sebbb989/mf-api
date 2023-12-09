@@ -9,6 +9,10 @@ const gradeSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    currentlyEnrolled: {
+        type: Number,
+        required: true,
+    },
     students: {
         type: [userSchema],
         required: true,
@@ -17,6 +21,14 @@ const gradeSchema = new mongoose.Schema({
 const instituteSchema = new mongoose.Schema({
     name: {
         type: String,
+        required: true,
+    },
+    minGrade: {
+        type: Number,
+        required: true,
+    },
+    maxGrade: {
+        type: Number,
         required: true,
     },
     province: {

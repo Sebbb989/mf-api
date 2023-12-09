@@ -35,16 +35,20 @@ export const userSignUp = async (req, res, next) => {
             isForeign: false,
             migratoryPermit: "DATOQUEMADO",
             password: hashedPassword,
+            isEnrolled: false,
+            enrollNumber: null,
         });
         await user.save();
         //create cookie
         createCookie(res, user, req);
         //reponse
         return res.status(200).json({
-            message: "OK",
-            name,
-            email,
-            dni,
+            message: "Welcome",
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            dni: user.dni,
+            isEnrolled: user.isEnrolled ?? false,
         });
     }
     catch (error) {
@@ -66,9 +70,12 @@ export const userLogin = async (req, res, next) => {
         createCookie(res, user, req);
         return res.status(200).json({
             message: "Welcome",
+            id: user.id,
             name: user.name,
             email: user.email,
             dni: user.dni,
+            isEnrolled: user.isEnrolled ?? false,
+            enrollNumber: user.enrollNumber ?? null,
         });
     }
     catch (error) {
@@ -88,9 +95,12 @@ export const verifyUser = async (req, res, next) => {
         }
         return res.status(200).json({
             message: "Welcome",
+            id: user.id,
             name: user.name,
             email: user.email,
             dni: user.dni,
+            isEnrolled: user.isEnrolled ?? false,
+            enrollNumber: user.enrollNumber ?? null,
         });
     }
     catch (error) {
@@ -110,9 +120,10 @@ export const userLogout = async (req, res, next) => {
         }
         res.clearCookie(COOKIE_NAME, {
             path: "/",
-            domain: "localhost",
             httpOnly: true,
             signed: true,
+            secure: true,
+            sameSite: "none",
         });
         return res.status(200).json({ message: "Bye 👋" });
     }

@@ -49,6 +49,8 @@ export const userSignUp = async (
       isForeign: false,
       migratoryPermit: "DATOQUEMADO",
       password: hashedPassword,
+      isEnrolled: false,
+      enrollNumber: null,
     });
     await user.save();
 
@@ -57,10 +59,12 @@ export const userSignUp = async (
 
     //reponse
     return res.status(200).json({
-      message: "OK",
-      name,
-      email,
-      dni,
+      message: "Welcome",
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      dni: user.dni,
+      isEnrolled: user.isEnrolled ?? false,
     });
   } catch (error) {
     console.log(error);
@@ -88,9 +92,12 @@ export const userLogin = async (
 
     return res.status(200).json({
       message: "Welcome",
+      id: user.id,
       name: user.name,
       email: user.email,
       dni: user.dni,
+      isEnrolled: user.isEnrolled ?? false,
+      enrollNumber: user.enrollNumber ?? null,
     });
   } catch (error) {
     console.log(error);
@@ -115,9 +122,12 @@ export const verifyUser = async (
     }
     return res.status(200).json({
       message: "Welcome",
+      id: user.id,
       name: user.name,
       email: user.email,
       dni: user.dni,
+      isEnrolled: user.isEnrolled ?? false,
+      enrollNumber: user.enrollNumber ?? null,
     });
   } catch (error) {
     console.log(error);
@@ -143,9 +153,10 @@ export const userLogout = async (
 
     res.clearCookie(COOKIE_NAME, {
       path: "/",
-      domain: "localhost",
       httpOnly: true,
       signed: true,
+      secure: true,
+      sameSite: "none",
     });
 
     return res.status(200).json({ message: "Bye 👋" });
